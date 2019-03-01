@@ -249,6 +249,7 @@ static void print_advanced_help()
 	cout << "  --splat: enable splat extension" << endl << endl;
 	cout << "  --klee: enable klee extension" << endl << endl;
 	cout << "  --crest: enable crest extension" << endl << endl;
+	cout << "  --svcomp: enable svcomp extension" << endl << endl;
 
 	// coverage test options
 	cout << "  --coverage-test: enable coverage-test extension" << endl << endl;
@@ -256,7 +257,7 @@ static void print_advanced_help()
 	cout << "Can only be used with --coverage-test." << endl << endl;
 
 	cout << "  --func1_max_params <num>: specify the number of symbolic variables passed to func_1 (default 3). ";
-	cout << "Only used when --splat | --crest | --klee | --coverage-test is enabled." << endl << endl;
+	cout << "Only used when --splat | --crest | --klee | --svcomp | --coverage-test is enabled." << endl << endl;
 
 	// struct/union related options
 	cout << "  --fixed-struct-fields: fix the size of struct fields to max-struct-fields (default 10)." << endl << endl;
@@ -431,6 +432,11 @@ main(int argc, char **argv)
 
 		if (strcmp (argv[i], "--ccomp") == 0) {
 			CGOptions::ccomp(true);
+			continue;
+		}
+
+		if (strcmp (argv[i], "--svcomp") == 0) {
+			CGOptions::svcomp(true);
 			continue;
 		}
 

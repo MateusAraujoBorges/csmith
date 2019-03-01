@@ -189,6 +189,8 @@ set(csmith_SOURCES
   StatementReturn.h
   StringUtils.cpp
   StringUtils.h
+  SvcompExtension.cpp
+  SvcompExtension.h
   Type.cpp
   Type.h
   Variable.cpp

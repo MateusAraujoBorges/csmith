@@ -177,7 +177,7 @@ DefaultOutputMgr::RandomOutputFuncDefs()
 	size_t size = outs.size();
 	vector<Function*>::const_iterator i;
 	for (i = funcs.begin(); i != funcs.end(); ++i) {
-		if ((*i)->is_builtin)
+	  if ((*i)->is_builtin || (*i)->is_svcomp)
 			continue;
 		int index = pure_rnd_upto(size);
 		(*i)->Output(*outs[index]);

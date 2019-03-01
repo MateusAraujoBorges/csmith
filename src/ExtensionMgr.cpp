@@ -38,6 +38,7 @@
 #include "SplatExtension.h"
 #include "KleeExtension.h"
 #include "CrestExtension.h"
+#include "SvcompExtension.h"
 #include "CoverageTestExtension.h"
 #include "ExtensionValue.h"
 #include "Function.h"
@@ -63,6 +64,9 @@ ExtensionMgr::CreateExtension()
 	}
 	else if (CGOptions::coverage_test()) {
 		extension_ = dynamic_cast<AbsExtension*>(new CoverageTestExtension(CGOptions::coverage_test_size()));
+	}
+	else if (CGOptions::svcomp()) {
+	    extension_ = dynamic_cast<AbsExtension*>(new SvcompExtension());
 	}
 	else {
 		return;

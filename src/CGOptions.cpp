@@ -120,6 +120,7 @@ DEFINE_GETTER_SETTER_BOOL(splat)
 DEFINE_GETTER_SETTER_BOOL(klee)
 DEFINE_GETTER_SETTER_BOOL(crest)
 DEFINE_GETTER_SETTER_BOOL(ccomp)
+DEFINE_GETTER_SETTER_BOOL(svcomp)
 DEFINE_GETTER_SETTER_BOOL(coverage_test)
 DEFINE_GETTER_SETTER_INT(coverage_test_size)
 DEFINE_GETTER_SETTER_BOOL(packed_struct)
@@ -246,6 +247,7 @@ CGOptions::set_default_settings(void)
 	klee(false);
 	crest(false);
 	ccomp(false);
+	svcomp(false);
 	coverage_test(false);
 	coverage_test_size(CGOPTIONS_DEFAULT_COVERAGE_TEST_SIZE);
 	packed_struct(true);

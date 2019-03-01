@@ -391,6 +391,7 @@ Function::Function(const string &name, const Type *return_type)
 	  union_field_read(false),
 	  is_inlined(false),
 	  is_builtin(false),
+	  is_svcomp(false),
 	  visited_cnt(0),
 	  build_state(UNBUILT)
 {
@@ -405,6 +406,7 @@ Function::Function(const string &name, const Type *return_type, bool builtin)
 	  union_field_read(false),
 	  is_inlined(false),
 	  is_builtin(builtin),
+  	  is_svcomp(false),
 	  visited_cnt(0),
 	  build_state(UNBUILT)
 {
@@ -549,7 +551,7 @@ Function::OutputHeader(std::ostream &out)
 void
 Function::OutputForwardDecl(std::ostream &out)
 {
-	if (is_builtin)
+	if (is_builtin || is_svcomp)
 		return;
 	OutputHeader(out);
 	out << ";";
@@ -562,7 +564,7 @@ Function::OutputForwardDecl(std::ostream &out)
 void
 Function::Output(std::ostream &out)
 {
-	if (is_builtin)
+	if (is_builtin || is_svcomp)
 		return;
 	OutputMgr::set_curr_func(name);
 	output_comment_line(out, "------------------------------------------");
@@ -644,7 +646,7 @@ Function::GenerateBody(const CGContext &prev_context)
 		}
 	}
 	// Fill in the Function body.
-	if (is_builtin)
+	if (is_builtin || is_svcomp)
 		body = Block::make_dummy_block(cg_context);
 	else
 		body = Block::make_random(cg_context);
@@ -739,17 +741,48 @@ Function::initialize_builtin_functions()
 }
 
 void
+Function::initialize_svcomp_functions()
+{
+	Function* f = make_builtin_function("Int; __VERIFIER_error_proxy; (Void); x86");
+	f->is_builtin=false;
+	f->is_svcomp=true;
+	
+	// const Type *ty = Type::get_type_from_string("Int");
+	// Function *f = new Function("__VERIFIER_error_proxy", ty);
+	// f->is_svcomp = true;
+
+	// // dummy variable representing return variable, we don't care about the type, so use 0
+	// string rvname = f->name + "_" + "rv";
+	// CVQualifiers ret_qfer = CVQualifiers::random_qualifiers(ty);
+	// f->rv = Variable::CreateVariable(rvname, ty, NULL, &ret_qfer);
+	
+	// // create a fact manager for this function, with empty global facts
+	// FactMgr* fm = new FactMgr(f);
+	// FMList.push_back(fm);
+
+	// f->GenerateBody(CGContext::get_empty_context());
+	
+	// // update global facts to merged facts at all possible function exits
+	// fm->global_facts = fm->map_facts_out[f->body];
+	// f->body->add_back_return_facts(fm, fm->global_facts);
+
+	// // collect info about global dangling pointers
+	// fm->find_dangling_global_ptrs(f);
+}
+
+
+Function*
 Function::make_builtin_function(const string &function_string)
 {
 	vector<string> v;
 	StringUtils::split_string(function_string, v, ";");
 	if (v.size() == 4) {
 		if (!CGOptions::enabled_builtin(v[3]))
-			return;
+			return 0;
 	}
 	else if (v.size() == 3) {
 		if (!CGOptions::enabled_builtin("generic"))
-			return;
+			return 0;
 	}
 	else {
 		assert(0 && "Invalid builtin function format!");
@@ -777,6 +810,7 @@ Function::make_builtin_function(const string &function_string)
 	// collect info about global dangling pointers
 	fm->find_dangling_global_ptrs(f);
 	++builtin_functions_cnt;
+	return f;
 }
 
 void
@@ -804,6 +838,10 @@ GenerateFunctions(void)
 	FactMgr::add_interested_facts(CGOptions::interested_facts());
 	if (CGOptions::builtins())
 		Function::initialize_builtin_functions();
+
+	if (CGOptions::svcomp())
+		Function::initialize_svcomp_functions();
+	
 	// -----------------
 	// Create a basic first function, then generate a random graph from there.
 	/* Function *first = */ Function::make_first();

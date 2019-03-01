@@ -196,6 +196,9 @@ public:
 	static bool ccomp(void);
 	static bool ccomp(bool p);
 
+	static bool svcomp(void);
+	static bool svcomp(bool p);
+
 	static bool coverage_test(void);
 	static bool coverage_test(bool p);
 
@@ -529,6 +532,7 @@ private:
 	static bool	klee_;
 	static bool	crest_;
 	static bool	ccomp_;
+	static bool svcomp_;
 	static bool	coverage_test_;
 	static int	coverage_test_size_;
 	static bool	packed_struct_;

@@ -74,7 +74,7 @@ Block* find_block_by_id(int blk_id)
 	size_t i, j;
 	for (i=0; i<funcs.size(); i++) {
 		Function* f = funcs[i];
-		if (f->is_builtin)
+		if (f->is_builtin || f->is_svcomp)
 			continue;
 		for (j=0; j<f->blocks.size(); j++) {
 			if (f->blocks[j]->stm_id == blk_id) {

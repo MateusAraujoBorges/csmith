@@ -161,7 +161,7 @@ Bookkeeper::stat_blk_depths(void)
 	const vector<Function*>& funcs = get_all_functions();
 	int cnt = 0;
 	for (size_t i=0; i<funcs.size(); i++) {
-		if (funcs[i]->is_builtin)
+		if (funcs[i]->is_builtin || funcs[i]->is_svcomp)
 			continue;
 		cnt += stat_blk_depths_for_stmt(funcs[i]->body);
 	}
@@ -244,7 +244,7 @@ Bookkeeper::stat_expr_depths(void)
 {
 	const vector<Function*>& funcs = get_all_functions();
 	for (size_t i=0; i<funcs.size(); i++) {
-		if (funcs[i]->is_builtin)
+		if (funcs[i]->is_builtin || funcs[i]->is_svcomp)
 			continue;
 		stat_expr_depths_for_stmt(funcs[i]->body);
 	}

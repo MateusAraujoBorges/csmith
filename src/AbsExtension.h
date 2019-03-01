@@ -56,7 +56,7 @@ public:
 
 	virtual std::vector<ExtensionValue *> &get_values() = 0;
 
-	void Initialize(unsigned int num, std::vector<ExtensionValue *> &values);
+	virtual void Initialize(unsigned int num, std::vector<ExtensionValue *> &values);
 
 	void GenerateFirstParameterList(Function &curfunc, std::vector<ExtensionValue *> &values);
 

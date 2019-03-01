@@ -120,6 +120,7 @@ public:
 	bool union_field_read;
 	bool is_inlined;
 	bool is_builtin;
+	bool is_svcomp;
 	int  visited_cnt;
 	Effect accum_eff_context;
 
@@ -134,7 +135,8 @@ private:
 	void make_return_const();
 
 	static void initialize_builtin_functions();
-	static void make_builtin_function(const string &function_string);
+	static void initialize_svcomp_functions();
+	static Function* make_builtin_function(const string &function_string);
 
 private:
 	enum { UNBUILT, BUILDING, BUILT } build_state;
