@@ -78,7 +78,7 @@ SvcompExtension::output_symbolics(ostream &out)
 	for (i = values_.begin(); i != values_.end(); ++i) {
 		assert(*i);
 		out << AbsExtension::tab_;
-		out << (*i)->get_name() << " = __VERIFIER_nondet_int(void);" << endl;
+		out << (*i)->get_name() << " = __VERIFIER_nondet_int();" << endl;
 	}
 }
 
