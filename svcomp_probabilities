@@ -1,0 +1,10 @@
+(assign_binary_ops_prob,binary_mod_prob=0,binary_gt_prob=1,binary_lt_prob=1,binary_ge_prob=1,binary_le_prob=1,binary_eq_prob=1,binary_ne_prob=1,binary_and_prob=1,binary_or_prob=1,binary_bit_xor_prob=0,binary_bit_and_prob=0,binary_bit_or_prob=0,binary_bit_rshift_prob=0,binary_bit_lshift_prob=0)
+
+(assign_unary_ops_prob,unary_plus_prob=0,unary_minus_prob=1,unary_not_prob=1,unary_bit_not_prob=0)
+
+(simple_types_prob,void_prob=0,char_prob=0,int_prob=1,short_prob=0,long_prob=0,long_long_prob=0,uchar_prob=0,uint_prob=0,ushort_prob=0,ulong_prob=0,ulong_long_prob=0,float_prob=0)
+
+(safe_ops_size_prob,safe_ops_size_int8=0,safe_ops_size_int16=1,safe_ops_size_int32=1,safe_ops_size_int64=0)
+
+
+
