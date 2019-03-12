@@ -1209,6 +1209,10 @@ Type::GenerateSimpleTypes(void)
     unsigned int st;
     for (st=eChar; st<MAX_SIMPLE_TYPES; st++)
     {
+		if (CGOptions::svcomp() && st != eInt) {
+			continue;
+		}
+		
 		AllTypes.push_back(new Type((enum eSimpleType)st));
     }
     Type::void_type = new Type((enum eSimpleType)eVoid);

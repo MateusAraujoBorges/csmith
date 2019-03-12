@@ -15,4 +15,4 @@
 
 CSMITH=src/csmith
 
-$CSMITH --no-argc --no-bitfields --no-checksum --no-comma-operators --no-embedded-assigns --no-unary-plus-operator --no-int8 --no-uint8 --no-float --no-math64 --no-packed-struct --no-volatiles --no-safe-math --no-compound-assignment --svcomp --probability-configuration svcomp_probabilities --no-longlong --no-jumps
+$CSMITH --no-argc --no-bitfields --no-checksum --no-comma-operators --no-embedded-assigns --no-unary-plus-operator --no-int8 --no-uint8 --no-float --no-math64 --no-packed-struct --no-volatiles --no-safe-math --no-compound-assignment --svcomp --probability-configuration svcomp_probabilities --ccomp --no-longlong --no-jumps

@@ -2,9 +2,8 @@
 
 (assign_unary_ops_prob,unary_plus_prob=0,unary_minus_prob=1,unary_not_prob=1,unary_bit_not_prob=0)
 
-(simple_types_prob,void_prob=0,char_prob=0,int_prob=1,short_prob=0,long_prob=0,long_long_prob=0,uchar_prob=0,uint_prob=0,ushort_prob=0,ulong_prob=0,ulong_long_prob=0,float_prob=0)
 
-(safe_ops_size_prob,safe_ops_size_int8=0,safe_ops_size_int16=1,safe_ops_size_int32=1,safe_ops_size_int64=0)
+
 
 
 
