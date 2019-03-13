@@ -202,15 +202,24 @@ SafeOpFlags::make_random_binary(const Type *rv_type, const Type *op1_type, const
 		flags->op1_ = true;
 	}
 	else {
+	  if (CGOptions::svcomp()) { //enforce use of signed values
+		flags->op1_ = true;
+	  }
+	  else {
 		flags->op1_ = rnd_flipcoin(SafeOpsSignedProb);
+	  }
 	}
 	ERROR_GUARD_AND_DEL1(NULL, flags);
 
 	if (op_kind == sOpBinary) {
 		if (rv_is_float)
 			flags->op2_ = true;
-		else
-			flags->op2_ = rnd_flipcoin(SafeOpsSignedProb);
+		else if (CGOptions::svcomp()) {
+		  flags->op2_ = true;
+		} else {
+		  flags->op2_ = rnd_flipcoin(SafeOpsSignedProb);
+		}
+		
 		ERROR_GUARD_AND_DEL1(NULL, flags);
 	}
 	else {
@@ -227,6 +236,9 @@ SafeOpFlags::make_random_binary(const Type *rv_type, const Type *op1_type, const
 	if (rv_is_float) {
 		assert(CGOptions::enable_float());
 		flags->op_size_ = sFloat;
+	}
+	else if (CGOptions::svcomp()) {
+	  flags->op_size_ = sInt32;
 	}
 	else {
 		flags->op_size_ = (SafeOpSize)rnd_upto(MAX_SAFE_OP_SIZE-1, SAFE_OPS_SIZE_PROB_FILTER);
