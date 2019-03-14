@@ -9,11 +9,12 @@
 #   checks, which is not desirable. Might be worth injecting these as
 #   a second step.
 #!/usr/bin/env bash
-CSMITH=./csmith
+CSMITH=./src/csmith
 
 if [[ $# == 0 ]]
 then
 	echo "Usage: runCSmithForSVComp.sh filename"
+	exit -1
 fi
 
 #remove extension
@@ -30,7 +31,7 @@ $CSMITH --no-argc --no-bitfields --no-checksum --no-comma-operators \
 	sed "s/\^/+/gp" > "$TMP_FILE" #TODO figure out why csmith still generates XORs
 
 #preprocess file
-gcc -E -xc - < "$TMP_FILE" > "${FILENAME}.c"
-sed "s/#include </TMP_TOKEN/g" < "$TMP_FILE" | gcc -E -xc -DRANDOM_INPUT - | sed "s/TMP_TOKEN/#include </g"  > "${FILENAME}_rnd.c"
+gcc -E -xc -Iruntime/ - < "$TMP_FILE" > "${FILENAME}.c"
+sed "s/#include </TMP_TOKEN/g" < "$TMP_FILE" | gcc -E -xc -Iruntime/ -DRANDOM_INPUT - | sed "s/TMP_TOKEN/#include </g"  > "${FILENAME}_rnd.c"
 	
 rm "$TMP_FILE"
