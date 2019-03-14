@@ -69,24 +69,6 @@ transparent_crc_bytes (char *ptr, int nbytes, char* vname, int flag)
 
 void put_hex (int x)
 {
-  switch (x) {
-  case 0x0: putchar ('0'); break;
-  case 0x1: putchar ('1'); break;
-  case 0x2: putchar ('2'); break;
-  case 0x3: putchar ('3'); break;
-  case 0x4: putchar ('4'); break;
-  case 0x5: putchar ('5'); break;
-  case 0x6: putchar ('6'); break;
-  case 0x7: putchar ('7'); break;
-  case 0x8: putchar ('8'); break;
-  case 0x9: putchar ('9'); break;
-  case 0xa: putchar ('a'); break;
-  case 0xb: putchar ('b'); break;
-  case 0xc: putchar ('c'); break;
-  case 0xd: putchar ('d'); break;
-  case 0xe: putchar ('e'); break;
-  case 0xf: putchar ('f'); break;
-  }
 }
 
 static inline void

@@ -94,13 +94,32 @@ SvcompExtension::OutputInit(std::ostream &out)
 void
 SvcompExtension::OutputHeader(std::ostream &out)
 {
+  out << "#ifdef RANDOM_INPUT" << endl;
+  out << "#include <stdlib.h>" << endl;
+  out << "#include <stdio.h>" << endl;
+  out << "" << endl;
+  out << "int __VERIFIER_nondet_int(void) {" << endl;
+  out << "  FILE *f_random;" << endl;
+  out << "  f_random = fopen(\"/dev/urandom\",\"r\");" << endl;
+  out << "  int randval;" << endl;
+  out << "  fread(&randval, sizeof(randval), 1, f_random);" << endl;
+  out << "  fclose(f_random);" << endl;
+  out << "  printf(\"[csmith] read %d from /dev/urandom\\n\",randval);" << endl;
+  out << "  return randval;" << endl;
+  out << "}" << endl;
+  out << "void __VERIFIER_error(void) {" << endl;
+  out << "  printf(\"VERIFIER_ERRROR reached!\\n\");" << endl;
+  out << "  exit(42);" << endl;
+  out << "}" << endl;
+  out << "#else" << endl;
   out << "extern void __VERIFIER_error(void);" << endl;
   out << "extern int __VERIFIER_nondet_int(void);" << endl;
   out << "extern void exit(int);" << endl;
-  out << "int __VERIFIER_error_proxy() { " << endl
-	  << "    __VERIFIER_nondet();" << endl
-	  << "    return -1;" << endl
-	  << "} " << endl;
+  out << "#endif" << endl;
+  out << "int __VERIFIER_error_proxy() {" << endl;
+  out << "  __VERIFIER_error();" << endl;
+  out << "  return -1;" << endl;
+  out << "}" << endl;
 }
 
 void
