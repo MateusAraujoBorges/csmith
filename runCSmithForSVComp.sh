@@ -9,7 +9,9 @@
 #   checks, which is not desirable. Might be worth injecting these as
 #   a second step.
 #!/usr/bin/env bash
-CSMITH=./src/csmith
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+CSMITH="$DIR/src/csmith"
 
 if [[ $# == 0 ]]
 then
@@ -25,13 +27,13 @@ $CSMITH --no-argc --no-bitfields --no-checksum --no-comma-operators \
 		--no-embedded-assigns --no-unary-plus-operator --no-int8 \
 		--no-uint8 --no-float --no-math64 --no-packed-struct --no-volatiles\
 		--no-safe-math --no-compound-assignment --svcomp \
-		--probability-configuration svcomp_probabilities --ccomp --no-longlong\
+		--probability-configuration "$DIR/svcomp_probabilities" --ccomp --no-longlong\
 		--no-jumps --no-const-pointers --no-consts | \
 	sed "s/csmith.h/csmith_svcomp.h/" | \
-	sed "s/\^/+/gp" | gawk -f refactorIfs.awk > "$TMP_FILE" #TODO figure out why csmith still generates XORs
+	sed "s/\^/+/gp" | gawk -f "$DIR/refactorIfs.awk" > "$TMP_FILE" #TODO figure out why csmith still generates XORs
 
 #preprocess file
-gcc -E -xc -Iruntime/ - < "$TMP_FILE" > "${FILENAME}.c"
-sed "s/#include </TMP_TOKEN/g" < "$TMP_FILE" | gcc -E -xc -Iruntime/ -DRANDOM_INPUT - | sed "s/TMP_TOKEN/#include </g"  > "${FILENAME}_rnd.c"
+gcc -E -xc "-I${DIR}/runtime/" - < "$TMP_FILE" > "${FILENAME}.c"
+sed "s/#include </TMP_TOKEN/g" < "$TMP_FILE" | gcc -E -xc "-I${DIR}/runtime/" -DRANDOM_INPUT - | sed "s/TMP_TOKEN/#include </g"  > "${FILENAME}_rnd.c"
 	
 rm "$TMP_FILE"
