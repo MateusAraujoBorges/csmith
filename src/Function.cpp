@@ -743,31 +743,25 @@ Function::initialize_builtin_functions()
 void
 Function::initialize_svcomp_functions()
 {
-	Function* f = make_builtin_function("Int; __VERIFIER_error_proxy; (Void); x86");
-	f->is_builtin=false;
-	f->is_svcomp=true;
-	
-	// const Type *ty = Type::get_type_from_string("Int");
-	// Function *f = new Function("__VERIFIER_error_proxy", ty);
-	// f->is_svcomp = true;
+    const Type *ty = Type::get_type_from_string("Void");
+	Function *f = new Function("__VERIFIER_error", ty);
+	f->is_svcomp = true;
 
-	// // dummy variable representing return variable, we don't care about the type, so use 0
-	// string rvname = f->name + "_" + "rv";
-	// CVQualifiers ret_qfer = CVQualifiers::random_qualifiers(ty);
-	// f->rv = Variable::CreateVariable(rvname, ty, NULL, &ret_qfer);
-	
-	// // create a fact manager for this function, with empty global facts
-	// FactMgr* fm = new FactMgr(f);
-	// FMList.push_back(fm);
+	// create a fact manager for this function, with empty global facts
+	FactMgr* fm = new FactMgr(f);
+	FMList.push_back(fm);
 
-	// f->GenerateBody(CGContext::get_empty_context());
-	
-	// // update global facts to merged facts at all possible function exits
-	// fm->global_facts = fm->map_facts_out[f->body];
-	// f->body->add_back_return_facts(fm, fm->global_facts);
+	f->GenerateBody(CGContext::get_empty_context());
 
-	// // collect info about global dangling pointers
-	// fm->find_dangling_global_ptrs(f);
+	// update global facts to merged facts at all possible function exits
+	fm->global_facts = fm->map_facts_out[f->body];
+	f->body->add_back_return_facts(fm, fm->global_facts);
+
+	// collect info about global dangling pointers
+	fm->find_dangling_global_ptrs(f);
+	// not builtin, but since svcomp uses FuncList[builtin_functions_cnt] as the entry point
+	// we must increment this var
+	++builtin_functions_cnt; 
 }
 
 

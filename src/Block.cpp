@@ -64,6 +64,7 @@
 #include "CFGEdge.h"
 #include "Expression.h"
 #include "VectorFilter.h"
+#include "StatementExpr.h"
 
 using namespace std;
 
@@ -152,19 +153,31 @@ Block::make_random(CGContext &cg_context, bool looping)
 		delete b;
 		return NULL;
 	}
+	
 	unsigned int i;
 	if (b->stm_id == 1)
 		BREAK_NOP;			// for debugging
-	for (i = 0; i <= max; ++i) {
-		Statement *s = Statement::make_random(cg_context);
-		// In the exhaustive mode, Statement::make_random could return NULL;
-		if (!s)
-			break;
-		b->stms.push_back(s);
-		if (s->must_return()) {
-			break;
+
+	bool is_verror = false;
+	if (CGOptions::svcomp() && rnd_flipcoin(SvcompVerifierErrorProb)) {
+		const Function *f = find_function_by_name("__VERIFIER_error"); //FIXME extract constants
+		FunctionInvocationUser *fiu = new FunctionInvocationUser(const_cast<Function *>(f), false, NULL);
+		StatementExpr *sf = new StatementExpr(b, *fiu);
+		b->stms.push_back(sf);
+		is_verror = true;
+	} else {
+		for (i = 0; i <= max; ++i) {
+			Statement *s = Statement::make_random(cg_context);
+			// In the exhaustive mode, Statement::make_random could return NULL;
+			if (!s)
+				break;
+			b->stms.push_back(s);
+			if (s->must_return()) {
+				break;
+			}
 		}
 	}
+	
 
 	if (Error::get_error() != SUCCESS) {
 		curr_func->stack.pop_back();
@@ -173,7 +186,7 @@ Block::make_random(CGContext &cg_context, bool looping)
 	}
 
 	// append nested loop if some must-read/write variables hasn't been accessed
-	if (b->need_nested_loop(cg_context) && cg_context.blk_depth < CGOptions::max_blk_depth()) {
+	if (!is_verror && b->need_nested_loop(cg_context) && cg_context.blk_depth < CGOptions::max_blk_depth()) {
 		b->append_nested_loop(cg_context);
 	}
 

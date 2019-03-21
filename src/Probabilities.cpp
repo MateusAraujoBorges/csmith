@@ -486,6 +486,9 @@ Probabilities::set_single_name_maps()
 	// for choosing a builtin function
 	set_single_name("builtin_function_prob", pBuiltinFunctionProb);
 
+	// for choosing verifier_error if in svcomp mode
+	set_single_name("svcomp_verifier_error_prob", pVerifierErrorProb);
+
         //////////////////////////////////////////////////////////////////
 	// group for statement
 	set_single_name("statement_prob", pStatementProb);
@@ -600,6 +603,7 @@ Probabilities::initialize_single_probs()
 	m[pAccessOnceVariableProb] = 20;
 	m[pInlineFunctionProb] = CGOptions::inline_function_prob();
 	m[pBuiltinFunctionProb] = CGOptions::builtin_function_prob();
+	m[pVerifierErrorProb] = 2;
 
 	std::map<ProbName, int>::iterator i;
 	for (i = m.begin(); i != m.end(); ++i) {
@@ -806,6 +810,7 @@ Probabilities::set_default_statement_prob()
 
 	// never generate stand-alone blocks
 	SET_SINGLE_NAME("statement_block_prob", Block, 0);
+
 	SET_SINGLE_NAME("statement_ifelse_prob", IfElse, 15);
 	SET_SINGLE_NAME("statement_for_prob", For, 30);
 	SET_SINGLE_NAME("statement_return_prob", Return, 35);
