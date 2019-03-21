@@ -28,7 +28,7 @@ $CSMITH --no-argc --no-bitfields --no-checksum --no-comma-operators \
 		--probability-configuration svcomp_probabilities --ccomp --no-longlong\
 		--no-jumps --no-const-pointers --no-consts | \
 	sed "s/csmith.h/csmith_svcomp.h/" | \
-	sed "s/\^/+/gp" > "$TMP_FILE" #TODO figure out why csmith still generates XORs
+	sed "s/\^/+/gp" | gawk -f refactorIfs.awk > "$TMP_FILE" #TODO figure out why csmith still generates XORs
 
 #preprocess file
 gcc -E -xc -Iruntime/ - < "$TMP_FILE" > "${FILENAME}.c"
